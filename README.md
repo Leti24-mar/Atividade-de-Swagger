@@ -1,1 +1,78 @@
 # Atividade-de-Swagger
+
+#atividade feita, documentação de resgistro de  jogador
+openapi: 3.1.0
+
+info:
+  title: API de Registro de Jogadores
+  description: API para cadastrar contas e perfis de jogadores utilizando o Supabase.
+  version: 1.0.0
+
+servers:
+  - url: https://github.com/dudaguedesc/Alchemical/blob/main/src/managers/AuthManager.js
+    description: local do arquivo no github
+
+tags:
+  - name: Jogadores
+    description: Operações de cadastro de jogadores
+
+paths:
+  /registro:
+    post:
+      tags:
+        - Jogadores
+      summary: Registrar um novo jogador
+      description: Cria uma conta de autenticação e registra o perfil do jogador.
+      operationId: registerPlayer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: E-mail da conta do jogador.
+                password:
+                  type: string
+                  format: password
+                  description: Senha utilizada para criar a conta.
+                nomeJogador:
+                  type: string
+                  format: text
+                  description: Nome do jogador.
+              required:
+                - email
+                - password
+                - nomeJogador
+            example:
+              email: jogador@gmail.com
+              password: senha123
+              nomeJogador: J1
+      responses:
+        '201':
+          description: Conta e perfil criados com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: Dados retornados pela autenticação.
+                  error:
+                    type: 'null'
+        '400':
+          description: Erro ao criar a conta ou registrar o perfil.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    description: Detalhes do erro ocorrido.
+        '500':
+          description: Mostra erro interno ao processar o registro.
